@@ -25,11 +25,12 @@ st.markdown(
     .block-container { max-width: 1200px; padding-top: 2.5rem; }
     .hero h1 { font-size: 2.1rem; font-weight: 700; margin-bottom: 0.25rem; padding: 0; }
     .hero p { font-size: 1.05rem; opacity: 0.7; margin: 0 0 1.25rem; }
-    .char-count { text-align: right; font-size: 0.85rem; opacity: 0.6; margin-top: -0.6rem; }
+    /* 보조 글자는 라이트 모드에서도 대비 4.5:1 이상이 되도록 opacity 0.72 이상을 쓴다. */
+    .char-count { text-align: right; font-size: 0.85rem; opacity: 0.72; margin-top: -0.6rem; }
     .char-count.near-limit { color: #E5484D; opacity: 1; font-weight: 600; }
     .card-title { font-size: 1.15rem; font-weight: 700; margin: 0; }
-    .card-sub { font-size: 0.85rem; opacity: 0.6; margin: 0 0 0.25rem; }
-    .empty-state { text-align: center; padding: 2.5rem 1rem; opacity: 0.55; }
+    .card-sub { font-size: 0.85rem; opacity: 0.72; margin: 0 0 0.25rem; }
+    .empty-state { text-align: center; padding: 2.5rem 1rem; opacity: 0.72; }
     .empty-state .icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
     /* 일본어 결과는 일본어 자형(한자)으로 표시한다. */
     .st-key-result-ja pre, .st-key-result-ja code {
@@ -86,14 +87,20 @@ st.text_area(
     key="input_text",
     placeholder="번역할 글을 입력하세요...",
     height=220,
-    max_chars=MAX_CHARS,
 )
+# max_chars를 쓰면 제한을 넘는 붙여넣기가 안내 없이 통째로 무시되므로, 입력은 받고 직접 검사한다.
 char_count = len(st.session_state.input_text)
+over_limit = char_count > MAX_CHARS
 near_limit = " near-limit" if char_count >= MAX_CHARS * 0.9 else ""
 st.markdown(
     f'<div class="char-count{near_limit}">{char_count:,} / {MAX_CHARS:,}자</div>',
     unsafe_allow_html=True,
 )
+if over_limit:
+    st.warning(
+        f"최대 {MAX_CHARS:,}자까지 입력할 수 있습니다. "
+        f"{char_count - MAX_CHARS:,}자를 줄여 주세요."
+    )
 
 st.pills(
     "번역 언어",
@@ -104,7 +111,7 @@ st.pills(
 )
 
 with st.container(horizontal=True):
-    translate_clicked = st.button("번역하기", type="primary", icon=":material/translate:")
+    translate_clicked = st.button("번역하기", type="primary", icon=":material/translate:", disabled=over_limit)
     st.button("초기화", on_click=reset, icon=":material/restart_alt:")
 
 if translate_clicked:
