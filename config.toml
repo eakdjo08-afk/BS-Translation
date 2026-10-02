@@ -1,0 +1,30 @@
+# Streamlit 테마 설정
+# 라이트/다크 모드는 사용자의 시스템 설정을 따른다.
+
+[theme]
+# 웹 글꼴은 app.py의 <style>에서 불러온다. (config의 font는 URL을 하나만 받을 수 있음)
+# 라틴(베트남어 성조 포함) → 한국어 → 일본어 순으로 글리프를 찾고,
+# Noto Color Emoji는 Windows에서 국기 이모지가 글자(US, JP)로 보이는 것을 막는다.
+font = "Noto Sans, Noto Sans KR, Noto Sans JP, Noto Color Emoji, sans-serif"
+# 번역 결과는 st.code로 표시하므로 코드 글꼴도 본문 글꼴과 맞춘다.
+codeFont = "Noto Sans, Noto Sans KR, Noto Sans JP, sans-serif"
+codeFontSize = "1rem"
+baseRadius = "0.75rem"
+buttonRadius = "0.6rem"
+showWidgetBorder = true
+
+[theme.light]
+primaryColor = "#3B6FD8"
+backgroundColor = "#FAFAF8"
+secondaryBackgroundColor = "#F0F2F6"
+textColor = "#1F2430"
+borderColor = "#DDE1E8"
+codeBackgroundColor = "#F5F7FA"
+
+[theme.dark]
+primaryColor = "#7FA6F5"
+backgroundColor = "#14171C"
+secondaryBackgroundColor = "#1E232B"
+textColor = "#E6E8EC"
+borderColor = "#2E3540"
+codeBackgroundColor = "#1A1F26"
